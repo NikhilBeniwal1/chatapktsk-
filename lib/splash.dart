@@ -12,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  int count = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -38,14 +39,36 @@ class _SplashScreenState extends State<SplashScreen> {
         // prefs.getInt('openCount');
       }
     });
+    _appOpenCount();
+  }
+
+  _appOpenCount() async {
+    var prefs = await SharedPreferences.getInstance();
+    var appOpenCount = prefs.getInt(LoginScreen.APP_OPEN_PREF_KEY);
+    if (appOpenCount != null) {
+      appOpenCount++;
+    } else {
+      appOpenCount = 0;
+      appOpenCount++;
+    }
+    count = appOpenCount;
+    prefs.setInt(LoginScreen.APP_OPEN_PREF_KEY, appOpenCount);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:
+          count % 2 == 0 ? Colors.amber.shade200 : Colors.blue.shade200,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Center(
+              child: Text(
+            "App Open Count : $count",
+            style: TextStyle(fontSize: 30),
+          )),
           Center(
               child: Text(
             "splash screen",
