@@ -1,8 +1,18 @@
+import 'package:chatapptask/lottiecontroller.dart';
+import 'package:chatapptask/sharedpref.dart';
+import 'package:chatapptask/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'animcontroller.dart';
+import 'lottie1.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int count = (prefs.getInt('openCount') ?? 0) + 1;
+  prefs.setInt('openCount', count);
+
   runApp(ShoppingApp());
 }
 
@@ -11,7 +21,11 @@ class ShoppingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shopping App',
-      home: MyAnimationControler(), // HomePage(),
+      debugShowCheckedModeBanner: false,
+      //   home: MyAnimationControler(),
+      //  home: LottieAnimation() // HomePage(),
+      // home: LottieController(),
+      home: SplashScreen(),
     );
   }
 }
